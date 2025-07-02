@@ -1,0 +1,19 @@
+{
+  "version": "2.0",
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle.Workflows",
+    "version": "[1.*, 2.0.0)"
+  },
+  "logging": {
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "excludedTypes": "Dependency"
+      },
+      "enableDependencyTracking": false
+    },
+    "logLevel": {
+      "default": "Warning"
+    }
+  }
+}
