@@ -20,19 +20,19 @@ variable "key_vault_name" {
   description = "Specify the name for the key vault service"
 }
 
-variable "keyvault_mas_sap_sap_password" {
+variable "keyvault_mas_sap_sap_password" {-
   type        = string
   description = "MAS SAP Password"
 }
 
-variable "keyvault_mas_sap_sap_username" {
+variable "keyvault_mas_sap_sap_username" {-
   type        = string
   description = "MAS SAP Username"
 }
 
-variable "keyvault_mas_sap_maximoauth_apikey" {
+variable "keyvault_jira_sf_apikey" {
   type        = string
-  description = "MAS SAP Maximo Apikey"
+  description = "Jira SF Apikey"
 }
 
 variable "logicapp_container_service_name" {
