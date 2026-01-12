@@ -1,0 +1,153 @@
+trigger:
+  branches:
+    include:
+    - develop
+    - feature/*
+  paths:
+    include:
+    - Azure/LogicApps/MAS-SAP
+    exclude:
+    - Azure/LogicApps/MAS-SAP/Pipeline
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: DevOps
+      type: GitHub
+      name: 'KiwirailAzureIntegration/DevOps.Pipelines.Common'
+      endpoint: 'GitHub - NikolaiBlackieKiwirail'
+      ref: 'refs/heads/integrationteamonly'
+
+variables:
+- template: Validation\validation-condition-variables.yaml@DevOps
+- name: LogicAppArtifactName 
+  value: 'logicapp_publish_artifact'
+- name: LogicAppContentsToPackage 
+  value: |
+      host.json
+      proxies.json
+      *-wf/**
+      Artifacts/**
+      Parameters/**
+      connections.json
+      lib/**
+
+stages:
+- stage: Build
+  displayName: 'Build Logic App Standard'
+  jobs:
+  - job: logic_app_build
+    variables:
+    - group: Azure.IntegrationShared.NONPROD
+    displayName: 'Build and publish logic app'
+    steps:
+    - checkout: self
+      
+    - template: Build\build-logicapp-workflow.yaml@DevOps
+      parameters:
+        logicAppDirectoryPath: '$(System.DefaultWorkingDirectory)/Azure/LogicApps/MAS-SAP'
+        logicAppContentsToPackage: '$(LogicAppContentsToPackage)'
+        logicAppArtifactName: '$(LogicAppArtifactName)'
+
+- stage: dv
+  displayName: 'DV Deployment'
+  jobs:
+  - deployment: dv
+    displayName: Deploy Logic App Standard
+    environment: dv
+    strategy:
+      runOnce:
+        deploy:
+          steps: 
+          - template: Deploy\deploy-logicapp-workflow.yaml@DevOps
+            parameters:
+              devopsConnectionName: 'Integration-DevOps-SP-NONPROD'
+              logicAppName: '$(Environment.Name)-aue-integration-mas-sap-logic'
+              logicAppArtifactName: '$(LogicAppArtifactName)'
+
+- stage: ts
+  displayName: 'TS Deployment'
+  condition: ${{ variables.tsCondition }}
+  jobs:
+  - deployment: ts
+    displayName: Deploy Logic App Standard
+    environment: ts
+    strategy:
+      runOnce:
+        deploy:
+          steps: 
+          - template: Deploy\deploy-logicapp-workflow.yaml@DevOps
+            parameters:
+              devopsConnectionName: 'Integration-DevOps-SP-NONPROD'
+              logicAppName: '$(Environment.Name)-aue-integration-mas-sap-logic'
+              logicAppArtifactName: '$(LogicAppArtifactName)'
+
+- stage: Ut_AUE_Deploy
+  displayName: 'UT Australia East Deployment'
+  condition: ${{ variables.utCondition }}
+  jobs:
+  - deployment: ut_aue
+    displayName: Deploy Logic App Standard
+    environment: ut-aue
+    strategy:
+      runOnce:
+        deploy:
+          steps: 
+          - template: Deploy\deploy-logicapp-workflow.yaml@DevOps
+            parameters:
+              devopsConnectionName: 'Integration-DevOps-SP-UAT'
+              logicAppName: '$(Environment.Name)-integration-mas-sap-logic'
+              logicAppArtifactName: '$(LogicAppArtifactName)'
+
+- stage: Ut_AUS_Deploy
+  displayName: 'UT Australia South East Deployment'
+  condition: ${{ variables.utCondition }}
+  jobs:
+  - deployment: ut_aus
+    displayName: Deploy Logic App Standard
+    environment: ut-aus
+    strategy:
+      runOnce:
+        deploy:
+          steps: 
+          - template: Deploy\deploy-logicapp-workflow.yaml@DevOps
+            parameters:
+              devopsConnectionName: 'Integration-DevOps-SP-UAT'
+              logicAppName: '$(Environment.Name)-integration-mas-sap-logic'
+              logicAppArtifactName: '$(LogicAppArtifactName)'
+
+- stage: Pd_AUE_Deploy
+  displayName: 'PD Australia East Deployment'
+  condition: ${{ variables.pdCondition }}
+  jobs:
+  - deployment: pd_aue
+    displayName: Deploy Logic App Standard
+    environment: pd-aue
+    strategy:
+      runOnce:
+        deploy:
+          steps: 
+          - template: Deploy\deploy-logicapp-workflow.yaml@DevOps
+            parameters:
+              devopsConnectionName: 'Integration-DevOps-SP-PROD'
+              logicAppName: '$(Environment.Name)-integration-mas-sap-logic'
+              logicAppArtifactName: '$(LogicAppArtifactName)'
+
+- stage: Pd_AUS_Deploy
+  displayName: 'PD Australia South East Deployment'
+  condition: ${{ variables.pdCondition }}
+  jobs:
+  - deployment: pd_aus
+    displayName: Deploy Logic App Standard
+    environment: pd-aus
+    strategy:
+      runOnce:
+        deploy:
+          steps: 
+          - template: Deploy\deploy-logicapp-workflow.yaml@DevOps
+            parameters:
+              devopsConnectionName: 'Integration-DevOps-SP-PROD'
+              logicAppName: '$(Environment.Name)-integration-mas-sap-logic'
+              logicAppArtifactName: '$(LogicAppArtifactName)'

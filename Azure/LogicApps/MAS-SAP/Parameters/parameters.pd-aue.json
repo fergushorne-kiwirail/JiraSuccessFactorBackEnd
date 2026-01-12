@@ -1,0 +1,26 @@
+{
+  "accountSubPath": {
+    "type": "String",
+    "value": "property.crm.account.changed.v1"
+  },
+  "environment": {
+    "type": "String",
+    "value": ""
+  },
+  "environmentMax": {
+    "type": "String",
+    "value": "Prod"
+  },
+  "MaximoAuthInbound": {
+    "type": "String",
+    "value": "bWF4aW1vOjNOQ3otbldnNEA="
+  },
+  "SAPAuthInbound": {
+    "type": "String",
+    "value": "YXp1cmVQRDoyeGpBQ1NJMzY4SEk="
+  },
+  "region": {
+    "type": "String",
+    "value": "aue"
+  }
+}

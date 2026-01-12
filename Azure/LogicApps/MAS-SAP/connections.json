@@ -1,0 +1,46 @@
+{
+  "managedApiConnections": {
+    "commondataservice": {
+      "api": {
+        "id": "/subscriptions/5ab70516-5f45-4ed3-b969-4078fe7eae34/providers/Microsoft.Web/locations/australiaeast/managedApis/commondataservice"
+      },
+      "authentication": {
+        "type": "ManagedServiceIdentity"
+      },
+      "connection": {
+        "id": "/subscriptions/5ab70516-5f45-4ed3-b969-4078fe7eae34/resourceGroups/dv-aue-integrationbackend-rg/providers/Microsoft.Web/connections/commondataservice-8"
+      },
+      "connectionRuntimeUrl": "https://1952042ce482ec0a.14.common.logic-australiaeast.azure-apihub.net/apim/commondataservice/09574d41fcef456bb0d7f5c44e5d4f21"
+    },
+    "servicebus": {
+      "api": {
+        "id": "/subscriptions/5ab70516-5f45-4ed3-b969-4078fe7eae34/providers/Microsoft.Web/locations/australiaeast/managedApis/servicebus"
+      },
+      "authentication": {
+        "type": "ManagedServiceIdentity"
+      },
+      "connection": {
+        "id": "/subscriptions/5ab70516-5f45-4ed3-b969-4078fe7eae34/resourceGroups/dv-aue-integrationbackend-rg/providers/Microsoft.Web/connections/dv-aue-integration-servicebus"
+      },
+      "connectionRuntimeUrl": "https://1952042ce482ec0a.14.common.logic-australiaeast.azure-apihub.net/apim/servicebus/b81ca4a440614d4aa2bc98f10775f76c"
+    }
+  },
+  "serviceProviderConnections": {
+    "sap-2": {
+      "displayName": "SAPDirectConnection",
+      "parameterValues": {
+        "applicationServerHost": "dvsapkr01.devtranzrail.co.nz",
+        "applicationServerSystemNumber": "00",
+        "authenticationType": "Basic",
+        "client": "400",
+        "language": "",
+        "logonType": "ApplicationServer",
+        "password": "@appsetting('sap_12_password')",
+        "userName": "RFC_AZU_PRP"
+      },
+      "serviceProvider": {
+        "id": "/serviceProviders/sap"
+      }
+    }
+  }
+}    
